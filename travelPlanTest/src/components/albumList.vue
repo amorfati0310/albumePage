@@ -51,4 +51,13 @@ export default {
   width: (100%)/3
   padding: 1rem 2rem
 
+@media screen and (min-width: 551px) and (max-width: 780px)
+  .album-list-item
+    width: (100%)/2
+    padding: 1rem 2rem
+
+@media screen and (max-width: 550px)
+  .album-list-item
+    width: (100%)
+
 </style>
