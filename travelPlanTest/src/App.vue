@@ -88,27 +88,11 @@ export default {
     },
     sendNewAlbumData(newalbumdata){
       this.albumsTotal.push(newalbumdata);
-    }
+    },
+    
 },
-  // beforeCreate() {
-  //   this.$http.get('https://jsonplaceholder.typicode.com/albums').then(response => {
-  //   console.log(response);
-  // }
-  //
-  //   var _this =this;
-  //   this.$http.get('/albums')
-  //             .then((result) => {
-  //               _this.albumsTotal = result.data;
-  //               _this.displayAlbums = _this.albumsTotal.slice(0, 9);
-  //             })
-  // },
-  // creted(){
-  //   console.log("하이");
-  //   this.getAlbumData(this.pageNationNumber)
-  // },
-  beforeMount() {
-    // console.log("하이");
-    // this.$set(this.getsuceess ,'sucess' ,true);
+  creted(){
+    console.log("하이");
     this.getAlbumData(this.pageNationNumber)
   },
   watch: {
