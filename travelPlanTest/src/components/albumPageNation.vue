@@ -1,7 +1,10 @@
 <template>
+
   <nav class="pagination is-centered">
+
       <a class="pagination-previous" v-if="allowPrevious" @click="previousPageNation(pageNationNumber)">Previous</a>
       <a class="pagination-next" v-if="allowNext" @click="nextPageNation(pageNationNumber)">Next page</a>
+
       <ul class="pagination-list">
           <li><a class="pagination-link" v-if="allowPrevious"
             @click="gotoThisPage(1)">1</a></li>
@@ -14,6 +17,7 @@
               @click="gotoThisPage(lastPageNationNumber)">{{lastPageNationNumber}}</a></li>
       </ul>
   </nav>
+
 </template>
 <script>
 export default {

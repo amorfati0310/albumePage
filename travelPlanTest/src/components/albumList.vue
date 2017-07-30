@@ -33,7 +33,7 @@
 </template>
 <script>
 export default {
-  props:["displayAlbums"],
+  props:["displayAlbums","albumsTotal"],
   name: "",
   data: function data() {
     return {

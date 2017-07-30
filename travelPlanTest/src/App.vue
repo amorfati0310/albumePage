@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <albumHeader></albumHeader>
-    <albumList :displayAlbums="displayAlbums"></albumList>
+    <albumList :displayAlbums="displayAlbums"
+      :albumsTota="albumsTotal"
+    ></albumList>
     <albumPageNation
     :pageNationNumber="pageNationNumber"
     :lastPageNationNumber="lastPageNationNumber"
@@ -9,7 +11,13 @@
     @nextPageNation="nextPageNation"
     @gotoThisPage="gotoThisPage"
     ></albumPageNation>
-    <button @click="start">일단 이걸로 하자</button>
+    <a class="button"  @click="directGetAlbumData">앨범 데이터 가지고 오기 :D</a>
+    <a class="button alubme-write is-large"  @click="writeAlbum"> <i class="fa fa-pencil" aria-hidden="true"></i></a>
+    <albumWrite :writeActive="writeActive"
+      :lastNumber="lastNumber"
+      @closeModal ="closeModal"
+      @sendNewAlbumData ="sendNewAlbumData"
+    ></albumWrite>
     <albumFooter></albumFooter>
   </div>
 </template>
@@ -18,7 +26,8 @@
 import albumHeader from './components/albumHeader.vue'
 import albumList from './components/albumList.vue'
 import albumFooter from './components/albumFooter.vue'
-import albumPageNation from './components/albumePageNation.vue'
+import albumPageNation from './components/albumPageNation.vue'
+import albumWrite from './components/albumWrite.vue'
 
 export default {
   name: 'app',
@@ -27,17 +36,20 @@ export default {
       albumsTotal:[],
       displayAlbums:[],
       pageNationNumber:1,
-      lastPageNationNumber:0
+      lastPageNationNumber:0,
+      writeActive: false,
+      lastNumber:''
     }
   },
   components: {
     albumHeader : albumHeader,
     albumList: albumList,
     albumFooter: albumFooter,
-    albumPageNation: albumPageNation
+    albumPageNation: albumPageNation,
+    albumWrite: albumWrite
   },
   methods: {
-    start(){
+    directGetAlbumData(){
       this.getAlbumData(this.pageNationNumber)
     },
     getAlbumData(pageNationNumber){
@@ -52,6 +64,8 @@ export default {
                   _this.lastPageNationNumber = result.data.length%9 === 0
                   ? result.data.length/9 : result.data.length/9 +1;
                   _this.lastPageNationNumber = Math.floor(_this.lastPageNationNumber)
+
+                  _this.lastNumber = _this.albumsTotal.length;
                 })
     },
     previousPageNation(currentPageNationNumber){
@@ -65,20 +79,42 @@ export default {
     gotoThisPage(thisPageNationNumber){
       this.pageNationNumber = thisPageNationNumber
       this.getAlbumData(thisPageNationNumber)
+    },
+    writeAlbum(){
+      this.writeActive = true;
+    },
+    closeModal(){
+      this.writeActive = false;
+    },
+    sendNewAlbumData(newalbumdata){
+      this.albumsTotal.push(newalbumdata);
     }
 },
-  beforeCreate() {
-    var _this =this;
-    this.$http.get(`/albums`)
-              .then((result) => {
-                _this.albumsTotal = result.data;
-                _this.displayAlbums = _this.albumsTotal.slice(0, 9);
-              })
+  // beforeCreate() {
+  //   this.$http.get('https://jsonplaceholder.typicode.com/albums').then(response => {
+  //   console.log(response);
+  // }
+  //
+  //   var _this =this;
+  //   this.$http.get('/albums')
+  //             .then((result) => {
+  //               _this.albumsTotal = result.data;
+  //               _this.displayAlbums = _this.albumsTotal.slice(0, 9);
+  //             })
+  // },
+  // creted(){
+  //   console.log("하이");
+  //   this.getAlbumData(this.pageNationNumber)
+  // },
+  beforeMount() {
+    // console.log("하이");
+    // this.$set(this.getsuceess ,'sucess' ,true);
+    this.getAlbumData(this.pageNationNumber)
   },
   watch: {
    changedAlbums: {
    handler: function (displayAlbums) {
-       console.log("changed");
+      this.getAlbumData(this.pageNationNumber)
      }
     }
   }
@@ -92,8 +128,19 @@ html
 body,h1
   margin: 0
 body
+  position: relative
   min-height: 100vh
 #app
   max-width: 1080px
   margin: 0 auto
+
+.alubme-write
+  position: fixed
+  right: 0
+  bottom: 1rem
+  border-radius: 50%
+  background-color: #ff2b56
+  color: #fff
+
+
 </style>
