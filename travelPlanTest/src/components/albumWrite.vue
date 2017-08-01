@@ -17,7 +17,7 @@
                 <img :src="newAlbumPhoto" />
                 <a class="button is-dark remove-prev" @click="removeImage">X</a>
             </div>
-            <input type="text" class="input album-title" v-model="newAlbumTitle" placeholder="앨범타이틀 입력해주세요 :D">
+            <input type="text" class="input album-title" @keyup.enter="sendNewAlbumData" v-model="newAlbumTitle" placeholder="앨범타이틀 입력해주세요 :D">
         </section>
         <footer class="modal-card-foot">
             <a class="button is-success" @click="sendNewAlbumData()">Save</a>
@@ -53,9 +53,11 @@ export default {
                 //이미지 데이터 전송 부터 먼저 시간이 오래 걸려서
 
                 var albumImage = this.newAlbumPhoto;
+
                 // console.log(albumImage);
-                var storageRef = firebase.storage().ref('albumPhoto/' + albumImage.name);
-                var uploadTask = storageRef.put(albumImage);
+                //
+                // var storageRef = firebase.storage().ref('albumPhoto/' + albumImage.name);
+                // var uploadTask = storageRef.put(albumImage);
 
                 // var uploader = document.querySelector('#uploader');
 
@@ -83,6 +85,20 @@ export default {
                 //             console.log(error);
                 //         });
                 //       });
+
+
+                    axios.post('https://fir-practice-b1abc.firebaseio.com/album-title.json', newalbumdata)
+                        .then(function(response) {
+                            console.log(response);
+                            _this.$emit('sendNewAlbumData', newalbumdata)
+                            _this.newAlbumTitle = '';
+                            _this.closeModal();
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+
+                        });
+
 
 
                 // 이미지 전송 cross origin 오류가 뜨는데 firebase 공식 문서에 나온 방법으로 시도 해보자!

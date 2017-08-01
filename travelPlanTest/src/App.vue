@@ -102,12 +102,17 @@ export default {
     },
     sendNewAlbumData(newalbumdata){
       this.albumsTotal.push(newalbumdata);
-    },
-
+    }
 },
-  creted(){
+  created(){
     console.log("하이");
     this.getAlbumData(this.pageNationNumber)
+  },
+  updated() {
+    console.log("하이");
+  },
+   beforeMount() {
+    console.log("before mounted");
   },
   watch: {
    changedAlbums: {
