@@ -28,6 +28,7 @@ import albumList from './components/albumList.vue'
 import albumFooter from './components/albumFooter.vue'
 import albumPageNation from './components/albumPageNation.vue'
 import albumWrite from './components/albumWrite.vue'
+import axios from 'axios'
 
 export default {
   name: 'app',
@@ -56,7 +57,7 @@ export default {
       var _this =this;
       var firstCut = (pageNationNumber-1)*9;
       var lastCut = pageNationNumber*9
-      this.$http.get(`/albums`)
+      axios.get(`https://jsonplaceholder.typicode.com/albums`)
                 .then((result) => {
                   _this.albumsTotal = result.data;
                   _this.displayAlbums = _this.albumsTotal.slice(firstCut, lastCut);
@@ -89,11 +90,14 @@ export default {
     sendNewAlbumData(newalbumdata){
       this.albumsTotal.push(newalbumdata);
     },
-    
-},
-  creted(){
-    console.log("하이");
-    this.getAlbumData(this.pageNationNumber)
+
+  },
+  created(){
+    console.log("when created");
+    this.getAlbumData(this.pageNationNumber);
+  },
+  beforeMount() {
+    console.log("before mounted");
   },
   watch: {
    changedAlbums: {
