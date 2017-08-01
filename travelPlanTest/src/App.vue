@@ -28,6 +28,9 @@ import albumList from './components/albumList.vue'
 import albumFooter from './components/albumFooter.vue'
 import albumPageNation from './components/albumPageNation.vue'
 import albumWrite from './components/albumWrite.vue'
+import axios from 'axios'
+
+
 
 export default {
   name: 'app',
@@ -38,7 +41,8 @@ export default {
       pageNationNumber:1,
       lastPageNationNumber:0,
       writeActive: false,
-      lastNumber:''
+      lastNumber:'',
+      storageKey: 'simpleAblum-vue.js.ver.1'
     }
   },
   components: {
@@ -52,21 +56,31 @@ export default {
     directGetAlbumData(){
       this.getAlbumData(this.pageNationNumber)
     },
+    settingPage(firstCut,lastCut){
+
+    },
+    updateAlbumData(){
+
+    },
     getAlbumData(pageNationNumber){
       var _this =this;
       var firstCut = (pageNationNumber-1)*9;
       var lastCut = pageNationNumber*9
-      this.$http.get(`/albums`)
+      axios.get('https://jsonplaceholder.typicode.com/albums')
                 .then((result) => {
+
                   _this.albumsTotal = result.data;
+
                   _this.displayAlbums = _this.albumsTotal.slice(firstCut, lastCut);
 
                   _this.lastPageNationNumber = result.data.length%9 === 0
                   ? result.data.length/9 : result.data.length/9 +1;
                   _this.lastPageNationNumber = Math.floor(_this.lastPageNationNumber)
 
+
                   _this.lastNumber = _this.albumsTotal.length;
                 })
+
     },
     previousPageNation(currentPageNationNumber){
       this.pageNationNumber = currentPageNationNumber
@@ -89,7 +103,7 @@ export default {
     sendNewAlbumData(newalbumdata){
       this.albumsTotal.push(newalbumdata);
     },
-    
+
 },
   creted(){
     console.log("하이");
