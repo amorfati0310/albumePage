@@ -59,8 +59,18 @@ export default {
     settingPage(firstCut,lastCut){
 
     },
-    updateAlbumData(){
+    updateAlbumData(pageNationNumber){
 
+      var firstCut = (pageNationNumber-1)*9;
+      var lastCut = pageNationNumber*9
+      this.displayAlbums = this.albumsTotal.slice(firstCut, lastCut);
+
+      this.lastPageNationNumber = this.albumsTotal.length%9 === 0
+      ? this.albumsTotal.length/9 : this.albumsTotal.length/9 +1;
+      this.lastPageNationNumber = Math.floor(this.lastPageNationNumber)
+
+
+      this.lastNumber = this.albumsTotal.length;
     },
     getAlbumData(pageNationNumber){
       var _this =this;
@@ -84,15 +94,15 @@ export default {
     },
     previousPageNation(currentPageNationNumber){
       this.pageNationNumber = currentPageNationNumber
-      this.getAlbumData(currentPageNationNumber)
+      this.updateAlbumData(currentPageNationNumber)
     },
     nextPageNation(currentPageNationNumber){
       this.pageNationNumber = currentPageNationNumber
-      this.getAlbumData(currentPageNationNumber)
+      this.updateAlbumData(currentPageNationNumber)
     },
     gotoThisPage(thisPageNationNumber){
       this.pageNationNumber = thisPageNationNumber
-      this.getAlbumData(thisPageNationNumber)
+      this.updateAlbumData(thisPageNationNumber)
     },
     writeAlbum(){
       this.writeActive = true;
@@ -105,19 +115,20 @@ export default {
     }
 },
   created(){
-    console.log("하이");
+    console.log("created");
     this.getAlbumData(this.pageNationNumber)
   },
-  updated() {
-    console.log("하이");
-  },
+  // updated() {
+  //   console.log("updated");
+  //   this.updateAlbumData(this.pageNationNumber)
+  // },
    beforeMount() {
     console.log("before mounted");
   },
   watch: {
    changedAlbums: {
    handler: function (displayAlbums) {
-      this.getAlbumData(this.pageNationNumber)
+      // this.getAlbumData(this.pageNationNumber)
      }
     }
   }
