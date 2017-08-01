@@ -29,7 +29,7 @@
 <script>
 export default {
     name: "",
-    props: ["writeActive", "lastNumber"],
+    props: ["writeActive", "pageNationNumber"],
     data: function data() {
         return {
             newAlbumTitle: '',
@@ -91,6 +91,7 @@ export default {
                         .then(function(response) {
                             console.log(response);
                             _this.$emit('sendNewAlbumData', newalbumdata)
+                            _this.$emit('updateAlbumData',_this.pageNationNumber);
                             _this.newAlbumTitle = '';
                             _this.closeModal();
                         })

@@ -14,9 +14,10 @@
     <a class="button"  @click="directGetAlbumData">앨범 데이터 가지고 오기 :D</a>
     <a class="button alubme-write is-large"  @click="writeAlbum"> <i class="fa fa-pencil" aria-hidden="true"></i></a>
     <albumWrite :writeActive="writeActive"
-      :lastNumber="lastNumber"
+      :pageNationNumber="pageNationNumber"
       @closeModal ="closeModal"
       @sendNewAlbumData ="sendNewAlbumData"
+      @updateAlbumData ="updateAlbumData"
     ></albumWrite>
     <albumFooter></albumFooter>
   </div>
@@ -74,21 +75,13 @@ export default {
     },
     getAlbumData(pageNationNumber){
       var _this =this;
-      var firstCut = (pageNationNumber-1)*9;
-      var lastCut = pageNationNumber*9
+      // var firstCut = (pageNationNumber-1)*9;
+      // var lastCut = pageNationNumber*9
       axios.get('https://jsonplaceholder.typicode.com/albums')
                 .then((result) => {
 
                   _this.albumsTotal = result.data;
-
-                  _this.displayAlbums = _this.albumsTotal.slice(firstCut, lastCut);
-
-                  _this.lastPageNationNumber = result.data.length%9 === 0
-                  ? result.data.length/9 : result.data.length/9 +1;
-                  _this.lastPageNationNumber = Math.floor(_this.lastPageNationNumber)
-
-
-                  _this.lastNumber = _this.albumsTotal.length;
+                  _this.updateAlbumData(pageNationNumber)
                 })
 
     },
@@ -119,6 +112,7 @@ export default {
     this.getAlbumData(this.pageNationNumber)
   },
   // updated() {
+  //   updated 에 함부러 넣었다간 무한 루프에 빠진다.!!!
   //   console.log("updated");
   //   this.updateAlbumData(this.pageNationNumber)
   // },
